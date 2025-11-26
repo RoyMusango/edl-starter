@@ -169,18 +169,25 @@ def test_create_task_empty_title(client):
 
 # EXERCICE 4 : Tester la validation - priorité invalide
 def test_update_task_with_invalid_priority(client):
-    """
-    VOTRE TÂCHE : Tester qu'on ne peut pas mettre à jour une tâche avec une priorité invalide.
-
-    Étapes :
-    1. Créer une tâche valide
-    2. Essayer de la mettre à jour avec priority="urgent" (invalide)
-    3. Vérifier que le code de statut est 422 (Erreur de Validation)
-
-    Rappel : Les priorités valides sont "low", "medium", "high" (voir TaskPriority dans app.py)
-    """
-    # TODO : Écrivez votre test ici !
-    pass
+   # 1. Créer une tâche valide
+    task_data = {
+        "title": "Tâche test",
+        "description": "Description de test",
+        "priority": "medium"
+    }
+    response = client.post("/tasks/", json=task_data)
+    assert response.status_code == 200
+    task_id = response.json()["id"]
+    
+    # 2. Essayer de mettre à jour avec une priorité invalide
+    update_data = {
+        "title": "Tâche test mise à jour",
+        "priority": "urgent"  # Priorité invalide
+    }
+    response = client.put(f"/tasks/{task_id}", json=update_data)
+    
+    # 3. Vérifier que le code de statut est 422 (Erreur de Validation)
+    assert response.status_code == 422
 
 def test_health_check(client):
     response = client.get("/health")
