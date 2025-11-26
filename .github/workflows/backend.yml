@@ -1,32 +1,55 @@
 ﻿name: Backend Tests
 on:
   push:
-    branches: [main, feature/test-branch-protection]
-  pull_request: # ✨ Nouveau !
-    branches: [main, feature/test-branch-protection]
-  workflow_call: # ✨ Nouveau !
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_call:
+
 jobs:
-  test:
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout code
         uses: actions/checkout@v4
-      
-      - name: Setup Python 3.11 with pip cache
-        uses: actions/setup-python@v4
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
-      
-      - name: Install UV with pip
+      - name: 📦 Install UV
         run: pip install uv
-      
-      - name: Install dependencies
+      - name: 📚 Install dependencies
         run: |
           cd backend
           uv sync
-      
-      - name: Run tests
+      - name: 🧪 Run unit tests only
         run: |
-          cd backend 
-          uv run pytest -v --cov
+          cd backend
+          uv run pytest -v -m "not e2e"
+          
+e2e-tests:
+  name: E2E Tests
+  runs-on: ubuntu-latest
+  if: github.ref == 'refs/heads/main' # ✨ Seulement sur main !
+  needs: unit-tests
+  steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    - name: 🐍 Setup Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - name: 📦 Install UV
+      run: pip install uv
+    - name: 📚 Install dependencies
+      run: |
+        cd backend
+        uv sync
+    - name: 🧪 Run E2E tests only
+      run: |
+        cd backend
+        uv run pytest -v -m "e2e"

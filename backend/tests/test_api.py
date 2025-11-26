@@ -113,26 +113,6 @@ def test_get_task_by_id(client):
 # =============================================================================
 # PARTIE 2 : À VOUS ! Complétez ces tests
 # =============================================================================
-
-# EXERCICE 1 : Écrire un test pour SUPPRIMER une tâche
-# Pattern : Créer → Supprimer → Vérifier qu'elle a disparu
-def test_delete_task(client):
-    """
-    VOTRE TÂCHE : Écrire un test qui supprime une tâche.
-
-    Étapes :
-    1. Créer une tâche (comme dans test_create_task)
-    2. Obtenir son ID
-    3. Envoyer une requête DELETE : client.delete(f"/tasks/{task_id}")
-    4. Vérifier que le code de statut est 204 (No Content)
-    5. Essayer de GET la tâche à nouveau → devrait retourner 404 (Not Found)
-
-    Astuce : Regardez test_get_task_by_id pour voir comment créer et obtenir l'ID
-    """
-    # TODO : Écrivez votre test ici !
-    pass
-
-
 # EXERCICE 2 : Écrire un test pour METTRE À JOUR une tâche
 # Pattern : Créer → Mettre à jour → Vérifier les changements
 def test_update_task(client):
@@ -166,21 +146,6 @@ def test_create_task_empty_title(client):
     # TODO : Écrivez votre test ici !
     pass
 
-
-# EXERCICE 4 : Tester la validation - priorité invalide
-def test_update_task_with_invalid_priority(client):
-    """
-    VOTRE TÂCHE : Tester qu'on ne peut pas mettre à jour une tâche avec une priorité invalide.
-
-    Étapes :
-    1. Créer une tâche valide
-    2. Essayer de la mettre à jour avec priority="urgent" (invalide)
-    3. Vérifier que le code de statut est 422 (Erreur de Validation)
-
-    Rappel : Les priorités valides sont "low", "medium", "high" (voir TaskPriority dans app.py)
-    """
-    # TODO : Écrivez votre test ici !
-    pass
 
 
 # EXERCICE 5 : Tester l'erreur 404
