@@ -1,7 +1,7 @@
 ﻿name: Backend Tests
 on:
   push:
-    branches: [main]
+    branches: [main, feature/test-branch-protection]
 jobs:
   test:
     runs-on: ubuntu-latest
