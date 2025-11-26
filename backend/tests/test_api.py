@@ -117,54 +117,65 @@ def test_get_task_by_id(client):
 # EXERCICE 1 : Écrire un test pour SUPPRIMER une tâche
 # Pattern : Créer → Supprimer → Vérifier qu'elle a disparu
 def test_delete_task(client):
-    """
-    VOTRE TÂCHE : Écrire un test qui supprime une tâche.
-
-    Étapes :
-    1. Créer une tâche (comme dans test_create_task)
-    2. Obtenir son ID
-    3. Envoyer une requête DELETE : client.delete(f"/tasks/{task_id}")
-    4. Vérifier que le code de statut est 204 (No Content)
-    5. Essayer de GET la tâche à nouveau → devrait retourner 404 (Not Found)
-
-    Astuce : Regardez test_get_task_by_id pour voir comment créer et obtenir l'ID
-    """
-    # TODO : Écrivez votre test ici !
-    pass
+    # 1. Créer une tâche
+    task_data = {
+        "title": "Tâche à supprimer",
+        "description": "Description test",
+        "priority": "low"
+    }
+    response = client.post("/tasks/", json=task_data)
+    
+    # 2. Obtenir son ID
+    task_id = response.json()["id"]
+    
+    # 3. Envoyer une requête DELETE
+    response = client.delete(f"/tasks/{task_id}")
+    
+    # 4. Vérifier que le code de statut est 204 (No Content)
+    assert response.status_code == 204
+    
+    # 5. Essayer de GET la tâche à nouveau → devrait retourner 404 (Not Found)
+    response = client.get(f"/tasks/{task_id}")
+    assert response.status_code == 404
 
 
 # EXERCICE 2 : Écrire un test pour METTRE À JOUR une tâche
 # Pattern : Créer → Mettre à jour → Vérifier les changements
 def test_update_task(client):
-    """
-    VOTRE TÂCHE : Écrire un test qui met à jour le titre d'une tâche.
-
-    Étapes :
-    1. Créer une tâche avec le titre "Titre Original"
-    2. Obtenir son ID
-    3. Envoyer une requête PUT : client.put(f"/tasks/{task_id}", json={"title": "Nouveau Titre"})
-    4. Vérifier que le code de statut est 200
-    5. Vérifier que la réponse contient le nouveau titre
-
-    Astuce : Les requêtes PUT sont comme les POST, mais elles modifient des données existantes
-    """
-    # TODO : Écrivez votre test ici !
-    pass
+    # 1. Créer une tâche avec le titre "Titre Original"
+    task_data = {
+        "title": "Titre Original",
+        "description": "Description originale",
+        "priority": "medium"
+    }
+    response = client.post("/tasks/", json=task_data)
+    
+    # 2. Obtenir son ID
+    task_id = response.json()["id"]
+    
+    # 3. Envoyer une requête PUT
+    update_data = {"title": "Nouveau Titre"}
+    response = client.put(f"/tasks/{task_id}", json=update_data)
+    
+    # 4. Vérifier que le code de statut est 200
+    assert response.status_code == 200
+    
+    # 5. Vérifier que la réponse contient le nouveau titre
+    assert response.json()["title"] == "Nouveau Titre"
 
 
 # EXERCICE 3 : Tester la validation - un titre vide devrait échouer
 def test_create_task_empty_title(client):
-    """
-    VOTRE TÂCHE : Tester que créer une tâche avec un titre vide échoue.
-
-    Étapes :
-    1. Essayer de créer une tâche avec title = ""
-    2. Vérifier que le code de statut est 422 (Erreur de Validation)
-
-    Astuce : Regardez test_create_task, mais attendez-vous à un échec !
-    """
-    # TODO : Écrivez votre test ici !
-    pass
+    # 1. Essayer de créer une tâche avec title = ""
+    task_data = {
+        "title": "",
+        "description": "Description de test",
+        "priority": "medium"
+    }
+    response = client.post("/tasks/", json=task_data)
+    
+    # 2. Vérifier que le code de statut est 422 (Erreur de Validation)
+    assert response.status_code == 422
 
 
 # EXERCICE 4 : Tester la validation - priorité invalide
