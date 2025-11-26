@@ -242,7 +242,7 @@ async def delete_task(task_id: int):
     """
     Delete a task by ID.
 
-    TODO (TP 1 - Exercice 1): Implémenter cette fonction
+    TODO (Atelier 1 - Exercice 1): Implémenter cette fonction
 
     Étapes à suivre:
     1. Vérifier que la tâche existe dans tasks_db
@@ -255,11 +255,9 @@ async def delete_task(task_id: int):
 
     Indice: C'est très simple, seulement 3 lignes de code !
     """
-    if task_id not in tasks_db:
-        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+    # TODO: Votre code ici
+    raise HTTPException(status_code=501, detail="Delete not implemented yet - complete this function!")
 
-    del tasks_db[task_id]
-    return None
 
 if __name__ == "__main__":
     import uvicorn
