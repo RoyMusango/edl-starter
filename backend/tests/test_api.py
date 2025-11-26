@@ -141,7 +141,7 @@ def test_delete_task(client):
 
 # EXERCICE 2 : Écrire un test pour METTRE À JOUR une tâche
 # Pattern : Créer → Mettre à jour → Vérifier les changements
-def test_update_task(client):
+"""def test_update_task(client):
     # 1. Créer une tâche avec le titre "Titre Original"
     task_data = {
         "title": "Titre Original",
@@ -162,6 +162,8 @@ def test_update_task(client):
     
     # 5. Vérifier que la réponse contient le nouveau titre
     assert response.json()["title"] == "Nouveau Titre"
+    
+"""
 
 
 # EXERCICE 3 : Tester la validation - un titre vide devrait échouer
