@@ -1,7 +1,10 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import pytest
 from fastapi.testclient import TestClient
 from src.app import app, clear_tasks
-
 
 @pytest.fixture(autouse=True)
 def clean_tasks():
@@ -12,7 +15,6 @@ def clean_tasks():
     clear_tasks()
     yield
     clear_tasks()
-
 
 @pytest.fixture
 def client():
@@ -26,3 +28,11 @@ def client():
     """
     with TestClient(app) as test_client:
         yield test_client
+
+
+def pytest_configure(config):
+    """Enregistre les markers personnalisés"""
+    config.addinivalue_line(
+    "markers",
+    "e2e: mark test as end-to-end test (slow)"
+    )

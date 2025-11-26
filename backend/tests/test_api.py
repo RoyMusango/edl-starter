@@ -113,26 +113,6 @@ def test_get_task_by_id(client):
 # =============================================================================
 # PARTIE 2 : À VOUS ! Complétez ces tests
 # =============================================================================
-
-# EXERCICE 1 : Écrire un test pour SUPPRIMER une tâche
-# Pattern : Créer → Supprimer → Vérifier qu'elle a disparu
-def test_delete_task(client):
-    """
-    VOTRE TÂCHE : Écrire un test qui supprime une tâche.
-
-    Étapes :
-    1. Créer une tâche (comme dans test_create_task)
-    2. Obtenir son ID
-    3. Envoyer une requête DELETE : client.delete(f"/tasks/{task_id}")
-    4. Vérifier que le code de statut est 204 (No Content)
-    5. Essayer de GET la tâche à nouveau → devrait retourner 404 (Not Found)
-
-    Astuce : Regardez test_get_task_by_id pour voir comment créer et obtenir l'ID
-    """
-    # TODO : Écrivez votre test ici !
-    pass
-
-
 # EXERCICE 2 : Écrire un test pour METTRE À JOUR une tâche
 # Pattern : Créer → Mettre à jour → Vérifier les changements
 def test_update_task(client):
@@ -167,21 +147,6 @@ def test_create_task_empty_title(client):
     pass
 
 
-# EXERCICE 4 : Tester la validation - priorité invalide
-def test_update_task_with_invalid_priority(client):
-    """
-    VOTRE TÂCHE : Tester qu'on ne peut pas mettre à jour une tâche avec une priorité invalide.
-
-    Étapes :
-    1. Créer une tâche valide
-    2. Essayer de la mettre à jour avec priority="urgent" (invalide)
-    3. Vérifier que le code de statut est 422 (Erreur de Validation)
-
-    Rappel : Les priorités valides sont "low", "medium", "high" (voir TaskPriority dans app.py)
-    """
-    # TODO : Écrivez votre test ici !
-    pass
-
 
 # EXERCICE 5 : Tester l'erreur 404
 def test_get_nonexistent_task(client):
@@ -194,6 +159,36 @@ def test_get_nonexistent_task(client):
     """
     # TODO : Écrivez votre test ici !
     pass
+
+#EXERCICE 6 :
+
+import pytest
+@pytest.mark.e2e
+def test_complete_task_lifecycle(client):
+    """Test E2E : Créer plusieurs tâches et les lister."""
+    # Créer la première tâche
+    response = client.post("/tasks", json={
+    "title": "Tâche E2E 1",
+    "description": "Première tâche"
+    })
+    assert response.status_code == 201
+    task1_id = response.json()["id"]
+    # Créer la deuxième tâche
+    response = client.post("/tasks", json={
+    "title": "Tâche E2E 2",
+    "description": "Deuxième tâche"
+    })
+    assert response.status_code == 201
+    task2_id = response.json()["id"]
+    # Lister toutes les tâches
+    response = client.get("/tasks")
+    assert response.status_code == 200
+    tasks = response.json()
+    assert len(tasks) >= 2
+    # Vérifier que nos deux tâches sont dans la liste
+    task_ids = [task["id"] for task in tasks]
+    assert task1_id in task_ids
+    assert task2_id in task_ids
 
 
 # =============================================================================
