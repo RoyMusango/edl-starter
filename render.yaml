@@ -1,4 +1,4 @@
-services:
+﻿services:
   # Backend FastAPI
   - type: web
     name: taskflow-backend
@@ -14,8 +14,8 @@ services:
       - key: CORS_ORIGINS
         sync: false
 
-  # Frontend React
-  - type: static
+  # Frontend React (corrigé)
+  - type: static_site
     name: taskflow-frontend
     plan: free
     buildCommand: npm ci && npm run build
