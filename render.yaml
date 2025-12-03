@@ -10,16 +10,13 @@ services:
     rootDir: backend
     envVars:
       - key: DATABASE_URL
-        sync: false  # Configuré manuellement
+        sync: false
       - key: CORS_ORIGINS
         sync: false
-    healthCheckPath: /health
 
   # Frontend React
-  - type: web
+  - type: static
     name: taskflow-frontend
-    runtime: static
-    region: frankfurt
     plan: free
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
